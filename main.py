@@ -35,23 +35,21 @@ class MyClient(discord.Client):
         while not messages:
             random_date = get_random_date(datetime.date(2022, 8, 13), datetime.date.today())
             print(random_date)
-            messages = await channel.history(limit=3,
-                                             before=random_date + datetime.timedelta(days=1),
-                                             after=random_date
-                                             ).flatten()
+            messages = [message async for message in channel.history(limit=3,
+                                                                     before=random_date + datetime.timedelta(days=1),
+                                                                     after=random_date)]
         print(messages[0].content)
         return messages[0]
 
     # async def select_message(self):
-    #     channel = self.get_channel(699334420678705243)
+    #     channel = self.get_channel(channel_id)
     #     messages = []
     #     while not messages:
     #         random_date = get_random_date(datetime.date(2022, 8, 13), datetime.date.today())
     #         print(random_date)
-    #         messages = await channel.history(limit=3,
-    #                                          before=random_date + datetime.timedelta(days=1),
-    #                                          after=random_date
-    #                                          ).flatten()
+    #         messages = [message async for message in channel.history(limit=3,
+    #                                                                  before=random_date + datetime.timedelta(days=1),
+    #                                                                  after=random_date)]
     #     print(messages[0].content)
     #     return messages[0]
 
