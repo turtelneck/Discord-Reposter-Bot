@@ -41,7 +41,7 @@ class MyClient(discord.Client):
             # use rand_date to get list of messages from one randomly selected day
             messages = [message async for message in channel.history(limit=10, before=rand_date_nextday, after=rand_date)]
         # return random message
-        return messages[random.randrange(len(messages)-1)]
+        return messages[random.randrange(len(messages))]
 
     @tasks.loop(seconds=30)
     async def post_random_message(self):
