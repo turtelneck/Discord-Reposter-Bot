@@ -1,4 +1,5 @@
 import discord
+from discord import Intents
 from discord.ext import tasks
 
 import random
@@ -30,15 +31,17 @@ class MyClient(discord.Client):
         self.post_random_message.start()
 
     async def select_message(self):
+        print("we are in select_message")
         channel = self.get_channel(channel_id)
         messages = []
         while not messages:
-            random_date = get_random_date(datetime.date(2022, 8, 13), datetime.date.today())
-            print(random_date)
-            messages = [message async for message in channel.history(limit=3,
-                                                                     before=random_date + datetime.timedelta(days=1),
-                                                                     after=random_date)]
-        print(messages[0].content)
+            start = datetime.datetime.combine(datetime.date(2022, 8, 20), datetime.time(0, 0))
+            end = datetime.datetime.combine(datetime.date(2022, 8, 10), datetime.time(0, 0))
+            messages = [message async for message in channel.history(limit=2)]  # ,before=end,after=start
+        for message in messages:
+            print("this seems to be working")
+            print(message)
+        print(messages[0])
         return messages[0]
 
     # async def select_message(self):
@@ -65,5 +68,8 @@ class MyClient(discord.Client):
         await self.wait_until_ready()
 
 
-client = MyClient(intents=discord.Intents.default())
+intents = discord.Intents.default()
+intents.message_content = True
+
+client = MyClient(intents=intents)
 client.run(os.getenv('TOKEN'))
