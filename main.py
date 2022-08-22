@@ -43,7 +43,7 @@ class MyClient(discord.Client):
         # return random message
         return messages[random.randrange(len(messages))]
 
-    @tasks.loop(seconds=30)
+    @tasks.loop(hours=24)
     async def post_random_message(self):
         message = await self.select_message()
         await message.reply(content=message.content)
