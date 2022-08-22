@@ -1,10 +1,7 @@
 import discord
-from discord import Intents
 from discord.ext import tasks
-
 import random
 import datetime
-
 import os
 from dotenv import load_dotenv
 
@@ -55,12 +52,10 @@ class MyClient(discord.Client):
 
     @post_random_message.before_loop
     async def before_my_task(self):
-        print("this is before_my_task")
         await self.wait_until_ready()
 
 
 intents = discord.Intents.default()
 intents.message_content = True
-
 client = MyClient(intents=intents)
 client.run(os.getenv('TOKEN'))
