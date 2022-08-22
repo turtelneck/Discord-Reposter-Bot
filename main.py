@@ -45,9 +45,8 @@ class MyClient(discord.Client):
 
     @tasks.loop(seconds=30)
     async def post_random_message(self):
-        channel = self.get_channel(channel_id)
         message = await self.select_message()
-        await channel.send(message.content)
+        await message.reply(content=message.content)
 
     @post_random_message.before_loop
     async def before_my_task(self):
