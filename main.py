@@ -31,17 +31,22 @@ class MyClient(discord.Client):
         self.post_random_message.start()
 
     async def select_message(self):
-        print("we are in select_message")
         channel = self.get_channel(channel_id)
         messages = []
+        # loops until it finds a date where messages were posted
         while not messages:
             date_earliest_msg = datetime.date(2022, 8, 13)
             rand_date = get_random_date(date_earliest_msg, datetime.date.today())
+            print(rand_date)
             rand_date_nextday = rand_date + datetime.timedelta(days=1)
             # use rand_date to get list of messages from one randomly selected day
-            messages = [message async for message in channel.history(limit=10, before=rand_date_nextday, after=rand_date)]
-        # return random message
-        return messages[random.randrange(len(messages))]
+            messages = [message async for message in channel.history(limit=10,
+                                                                     before=rand_date_nextday,
+                                                                     after=rand_date)]
+        message = messages[random.randrange(len(messages))]
+        if message.author == client.user:
+            return await self.select_message()
+        return message
 
     @tasks.loop(hours=24)
     async def post_random_message(self):
